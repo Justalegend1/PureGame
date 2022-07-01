@@ -1,0 +1,78 @@
+﻿@model IEnumerable<PureGame.Entity.Player>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Игроки</h1>
+
+<p>
+    <a asp-action="Create">Создать запись</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                
+                Фамилия
+            </th>
+            <th>
+                
+                Имя
+            </th>
+            <th>
+                
+                Отчество
+            </th>
+            <th>
+                
+                Команда
+            </th>
+            <th>
+                
+                Почта
+            </th>
+            <th>
+               
+                Дата рождения
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @using(ApplicationContext db = new ApplicationContext("DefaultConnection"))
+        {
+            var _result = from players in db.Players
+                          join teams in db.Teams on players.id_team equals teams.id_team
+                          select new
+                          {
+                              Middle_name = players.Middle_name,
+                              name = players.Name,
+                              father_name = players.Father_name,
+                              id_player = players.id_player,
+                              id_team = teams.team_name,
+                              e_mail = players.e_mail,
+                              Birth_date = players.Birth_date
+                          };
+            @foreach(var players in _result)
+            {
+        <tr>
+            <td>@players.Middle_name</td>
+            <td>@players.name</td>
+            <td>@players.father_name</td>
+            <td>@players.id_team</td>
+            <td>@players.e_mail</td>
+            <td>@players.Birth_date</td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@players.id_player">Изменить</a> |
+                <a asp-action="Delete" asp-route-id="@players.id_player">Удалить</a>
+            </td>
+        </tr>
+            
+        }
+}
+    </tbody>
+</table>
+<form style="display: inline-block;" asp-controller="Teams" asp-action="Index" method="get">
+           <input type="submit" value="Назад">
+           </form>

@@ -1,0 +1,49 @@
+﻿@model IEnumerable<PureGame.Entity.Team>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Команды</h1>
+
+<p>
+    <a asp-action="Create">Создать запись</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.team_name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.players_count)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.points_count)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.team_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.players_count)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.points_count)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.id_team">Изменить</a> |
+                <a asp-action="Delete" asp-route-id="@item.id_team">Удалить</a>
+            </td>
+        </tr>
+}
+    </tbody>
+    <form style="display: inline-block;" asp-controller="Players" asp-action="Index" method="get">
+           <input type="submit" value="Список игроков">
+           </form>
+</table>
